@@ -8,7 +8,7 @@ public class HillClimber {
 	private int[][] distance;
 	private int [] travel;
 	
-	private static final int LENGTH = 10;
+	private static final int LENGTH = 100;
 	private static final int MAX_RUNS = 100000;
 
 	public HillClimber() {
@@ -19,6 +19,10 @@ public class HillClimber {
 		}
 	}
 
+	/**
+	 * initialize Matrix of distances
+	 * @return matrix of distances
+	 */
 	private int[][] fillDistances() {
 		int [][] distance = new int[LENGTH][LENGTH];
 		for (int i = 0; i < distance.length; i++) {
@@ -28,6 +32,7 @@ public class HillClimber {
 		        distance[j][i] = distance[i][j];  
 		    }
 		}
+		//printing matrix 
 		for (int i = 0; i < distance.length; i++) {
 		    for (int j = 0; j < distance[i].length; j++) {
 		        System.out.print(distance[i][j] + " ");
@@ -36,19 +41,35 @@ public class HillClimber {
 		}
 		return distance;
 	}
-	
+	/**
+	 * get the length of the travel distance
+	 * @param travel
+	 * @return the negativ length of the travel distance
+	 */
 	private int getFitness(int [] travel){
 		int fitness = 0;
 		for(int i = 0; i < travel.length; i++){
 			fitness += getDistance(travel[i], travel[(i+1)% travel.length]);
 		}
-		return fitness;
+		// -Fitness for climbin up
+		return -(fitness);
 	}
 	
+	/**
+	 * distance between two cities
+	 * @param startCity
+	 * @param endCity
+	 * @return
+	 */
 	private int getDistance(int startCity, int endCity){
 		return distance[startCity][endCity];
 	}
 	
+	/**
+	 * change the position of two cities in the travel array
+	 * @param index1
+	 * @param index2
+	 */
 	private void swapCities (int index1, int index2){
 		int city = travel[index1];
 		travel[index1] = travel[index2];
@@ -60,6 +81,9 @@ public class HillClimber {
 		return random.nextInt(travel.length);
 	}
 	
+	/**
+	 * Hillclimbing algorithm for traveling salesman problem
+	 */
 	private void hillClimbing(){
 		int counter = 0;
 		int [] startPoint = travel;
@@ -71,7 +95,7 @@ public class HillClimber {
 			
 			swapCities(index1, index2);
 			int fitness = getFitness(travel);
-			if( fitness < lastFitness){
+			if( fitness > lastFitness){
 				lastFitness = fitness;
 				for(int i = 0; i < travel.length; i++){
 					System.out.print(travel[i] + ", ");
