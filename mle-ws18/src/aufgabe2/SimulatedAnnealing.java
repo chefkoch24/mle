@@ -16,6 +16,7 @@ public class SimulatedAnnealing {
 		for (int i = 0; i < travel.length; i++) {
 			this.travel[i] = i;
 		}
+		shuffleArray();
 	}
 
 	private int[][] fillDistances() {
@@ -91,6 +92,16 @@ public class SimulatedAnnealing {
 			}
 			temperature = temperature - epsilon;
 		} while (temperature > epsilon);
+	}
+	
+	public void shuffleArray() {
+		Random rnd = ThreadLocalRandom.current();
+		for (int i = travel.length - 1; i > 0; i--) {
+			int index = rnd.nextInt(i + 1);
+			int a = travel[index];
+			travel[index] =travel[i];
+			travel[i] = a;
+		}
 	}
 
 	public static void main(String[] args) {

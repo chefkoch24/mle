@@ -17,6 +17,7 @@ public class HillClimber {
 		for(int i = 0; i < travel.length; i++){
 			this.travel[i] = i;
 		}
+		shuffleArray();
 	}
 
 	/**
@@ -107,6 +108,16 @@ public class HillClimber {
 				swapCities(index2, index1);
 			}
 		}while(counter < MAX_RUNS);
+	}
+	
+	public void shuffleArray() {
+		Random rnd = ThreadLocalRandom.current();
+		for (int i = travel.length - 1; i > 0; i--) {
+			int index = rnd.nextInt(i + 1);
+			int a = travel[index];
+			travel[index] =travel[i];
+			travel[i] = a;
+		}
 	}
 
 	public static void main(String[] args) {
