@@ -44,14 +44,14 @@ public class HillClimber {
 	/**
 	 * get the length of the travel distance
 	 * @param travel
-	 * @return the negativ length of the travel distance
+	 * @return the negative length of the travel distance
 	 */
 	private int getFitness(int [] travel){
 		int fitness = 0;
 		for(int i = 0; i < travel.length; i++){
 			fitness += getDistance(travel[i], travel[(i+1)% travel.length]);
 		}
-		// -Fitness for climbin up
+		// -Fitness for climbing up
 		return -(fitness);
 	}
 	
@@ -82,7 +82,7 @@ public class HillClimber {
 	}
 	
 	/**
-	 * Hillclimbing algorithm for traveling salesman problem
+	 * Hill climbing algorithm for traveling salesman problem
 	 */
 	private void hillClimbing(){
 		int counter = 0;
@@ -101,8 +101,8 @@ public class HillClimber {
 					System.out.print(travel[i] + ", ");
 				}
 				System.out.println();
-				System.out.println("Counter:" + counter);
-				System.out.println("Distance:" + lastFitness);
+				//System.out.println("Counter:" + counter);
+				System.out.println("Distance:" + -1 * (lastFitness));
 			}else{
 				swapCities(index2, index1);
 			}
