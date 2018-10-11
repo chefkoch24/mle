@@ -103,7 +103,7 @@ public class HillClimber {
 				}
 				System.out.println();
 				//System.out.println("Counter:" + counter);
-				System.out.println("Distance:" + -1 * (lastFitness));
+				System.out.println("Distance:" + -lastFitness);
 			}else{
 				swapCities(index2, index1);
 			}

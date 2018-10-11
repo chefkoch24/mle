@@ -9,6 +9,8 @@ public class SimulatedAnnealing {
 
 	public static double E = 2.718281;
 	private static final int LENGTH = 100;
+	private static double TEMPERATURE = 1000;
+	private static double EPSILON = 0.01; // The cooling constant
 
 	public SimulatedAnnealing() {
 		this.distance = fillDistances();
@@ -19,6 +21,10 @@ public class SimulatedAnnealing {
 		shuffleArray();
 	}
 
+	/**
+	 * initialize Matrix of distances
+	 * @return matrix of distances
+	 */
 	private int[][] fillDistances() {
 		int[][] distance = new int[LENGTH][LENGTH];
 		for (int i = 0; i < distance.length; i++) {
@@ -28,6 +34,7 @@ public class SimulatedAnnealing {
 				distance[j][i] = distance[i][j];
 			}
 		}
+		// printing matrix
 		for (int i = 0; i < distance.length; i++) {
 			for (int j = 0; j < distance[i].length; j++) {
 				System.out.print(distance[i][j] + " ");
@@ -37,18 +44,35 @@ public class SimulatedAnnealing {
 		return distance;
 	}
 
+	/**
+	 * get the length of the travel distance
+	 * @param travel
+	 * @return the negative length of the travel distance
+	 */
 	private int getFitness(int[] travel) {
 		int fitness = 0;
 		for (int i = 0; i < travel.length; i++) {
 			fitness += getDistance(travel[i], travel[(i + 1) % travel.length]);
 		}
+		// -Fitness for climbing up
 		return -fitness;
 	}
 
+	/**
+	 * distance between two cities
+	 * @param startCity
+	 * @param endCity
+	 * @return
+	 */
 	private int getDistance(int startCity, int endCity) {
 		return distance[startCity][endCity];
 	}
 
+	/**
+	 * change the position of two cities in the travel array
+	 * @param index1
+	 * @param index2
+	 */
 	private void swapCities(int index1, int index2) {
 		int city = travel[index1];
 		travel[index1] = travel[index2];
@@ -60,11 +84,10 @@ public class SimulatedAnnealing {
 		return random.nextInt(travel.length);
 	}
 
+	/**
+	 * simulated annealing algorithm for traveling salesman problem
+	 */
 	private void simulatedAnnealing() {
-		// TODO find better starting temperature
-		double temperature = 1000;
-		// The cooling constant
-		double epsilon = 0.01;
 		int[] startPoint = travel;
 		int lastFitness = getFitness(startPoint);
 
@@ -80,18 +103,18 @@ public class SimulatedAnnealing {
 					System.out.print(travel[i] + ", ");
 				}
 				System.out.println();
-				System.out.println("Distance:" + lastFitness);
+				System.out.println("Distance:" + -lastFitness);
 
-			} else if ((Math.random()) < Math.pow(E, ((fitness - lastFitness) / temperature))) {
+			} else if ((Math.random()) < Math.pow(E, ((fitness - lastFitness) / TEMPERATURE))) {
 				// Print the probability of moving to a more costly state
-				System.out.println("Probability -> " + Math.pow(E, ((fitness - lastFitness) / temperature)));
+				System.out.println("Probability -> " + Math.pow(E, ((fitness - lastFitness) / TEMPERATURE)));
 				lastFitness = fitness;
-				System.out.println("Distance: " + lastFitness);
+				System.out.println("Distance: " + -lastFitness);
 			} else {
 				swapCities(index2, index1);
 			}
-			temperature = temperature - epsilon;
-		} while (temperature > epsilon);
+			TEMPERATURE = TEMPERATURE - EPSILON;
+		} while (TEMPERATURE > EPSILON);
 	}
 	
 	public void shuffleArray() {
