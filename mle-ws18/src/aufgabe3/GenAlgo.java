@@ -7,8 +7,8 @@ public class GenAlgo {
 
 	private static final int P = 100;
 	private static final int LENGTH = 100;
-	private static final double R = 0.8;
-	private static final double M = 0.5;
+	private static final double R = 0.05;
+	private static final double M = 0.1;
 	private int[] finalBitString = new int[LENGTH];
 	private int[][] population = new int[P][LENGTH];
 	private int[] fitnesses = new int[P];
@@ -77,7 +77,7 @@ public class GenAlgo {
 		}
 		return temp;
 	}
-	
+
 	private double calcProbability(int index) {
 //		System.out.println("prop: " + (double)fitnesses[index] / sumOfFitnesses());
 		return (double)fitnesses[index] / sumOfFitnesses();
@@ -142,8 +142,8 @@ public class GenAlgo {
 					nextGeneration[mIndex1][mIndex2] = 0;
 				}
 			}
-			
-			
+
+
 			for(int i = 0; i < nextGeneration.length; i++){
 				fitnesses[i] = getFitness(nextGeneration[i]);
 			}
@@ -152,13 +152,13 @@ public class GenAlgo {
 			System.out.println("Fitness: " + maxFitness);
 		}
 		System.out.println("Fertig");
-		
+
 	}
 
 	public static void main(String[] args) {
 		GenAlgo g = new GenAlgo();
 		g.evolutionAlgorithm();
 	}
-	
+
 
 }
