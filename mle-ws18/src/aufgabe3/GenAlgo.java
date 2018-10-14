@@ -5,8 +5,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GenAlgo {
 
-	private static final int NUMPOPULATION = 2;
-	private static final int LENGTH = 5;
+	private static final int NUMPOPULATION = 6;
+	private static final int LENGTH = 10;
 	private static final double R = 0.5;
 	private static final double M = 1.0;
 	private int[] finalBitString = new int[LENGTH];
@@ -39,6 +39,12 @@ public class GenAlgo {
 		Random rnd = ThreadLocalRandom.current();
 		for (int i = 0; i < array.length; i++) {
 			array[i] = rnd.nextInt(2);
+		}
+	}
+	
+	private void calcFitnesses(){
+		for (int i = 0; i < NUMPOPULATION; i++) {
+			fitnesses[i] = getFitness(population[i]);
 		}
 	}
 
@@ -77,16 +83,41 @@ public class GenAlgo {
 		}
 		return temp;
 	}
+	
+	private double calcProbability(int index) {
+//		System.out.println((double)fitnesses[index] / sumOfFitnesses());
+		return (double)fitnesses[index] / sumOfFitnesses();
+	}
+
+	private int selectHypothesis() {
+		Random rnd = ThreadLocalRandom.current();
+		double summe = 0.0;
+		int index = rnd.nextInt(NUMPOPULATION);
+//		System.out.println("Index " + index);
+		double randNum = Math.random();
+		while (summe < randNum) {
+//			System.out.println("Index " + index);
+			index++;
+			index = index % NUMPOPULATION;
+			summe = summe + calcProbability(index);
+//			System.out.println(summe);
+		}
+		return index;
+	}
 
 	private void evolutionAlgorithm() {
 		int maxFitness = getMaxFitness();
 
 		while (maxFitness < LENGTH) {
 			int[][] nextGeneration = new int[NUMPOPULATION][LENGTH];
+			int lastIndex = 0;
 			// Selection
 			for (int i = 0; i < (1 - R) * NUMPOPULATION; i++) {
 				nextGeneration[i] = copyBitString(population[selectHypothesis()]);
+				lastIndex=i;
 			}
+			lastIndex++;
+			System.out.println("lastIndex: " + lastIndex);
 			// Crossover
 			for (int i = 0; i < (R * NUMPOPULATION) / 2; i++) {
 				int[] mum = population[selectHypothesis()];
@@ -103,27 +134,18 @@ public class GenAlgo {
 						child2[j] = mum[j];
 					}
 				}
+				nextGeneration[(i+lastIndex)%NUMPOPULATION] = child1;
+				nextGeneration[(i+1+lastIndex)%NUMPOPULATION] = child2;
+			}
+			for(int i = 0; i < nextGeneration.length; i++){
+				fitnesses[i] = getFitness(nextGeneration[i]);
 			}
 			population = nextGeneration;
+			maxFitness = getMaxFitness();
+			System.out.println("Fitness: " + maxFitness);
 		}
+		System.out.println("Fertig");
 		
-	}
-
-	private double calcProbability(int index) {
-		return fitnesses[index] / sumOfFitnesses();
-	}
-
-	private int selectHypothesis() {
-		Random rnd = ThreadLocalRandom.current();
-		double summe = 0;
-		int index = rnd.nextInt(NUMPOPULATION);
-		double randNum = Math.random();
-		while (summe < randNum) {
-			index++;
-			index = index % NUMPOPULATION;
-			summe = summe + calcProbability(index);
-		}
-		return index;
 	}
 
 	public static void main(String[] args) {
