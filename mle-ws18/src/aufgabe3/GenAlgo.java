@@ -5,10 +5,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GenAlgo {
 
-	private static final int NUMPOPULATION = 6;
-	private static final int LENGTH = 10;
-	private static final double R = 0.5;
-	private static final double M = 1.0;
+	private static final int NUMPOPULATION = 100;
+	private static final int LENGTH = 1000;
+	private static final double R = 0.2;
+	private static final double M = 0.6;
 	private int[] finalBitString = new int[LENGTH];
 	private int[][] population = new int[NUMPOPULATION][LENGTH];
 	private int[] fitnesses = new int[NUMPOPULATION];
@@ -39,12 +39,6 @@ public class GenAlgo {
 		Random rnd = ThreadLocalRandom.current();
 		for (int i = 0; i < array.length; i++) {
 			array[i] = rnd.nextInt(2);
-		}
-	}
-	
-	private void calcFitnesses(){
-		for (int i = 0; i < NUMPOPULATION; i++) {
-			fitnesses[i] = getFitness(population[i]);
 		}
 	}
 
@@ -112,21 +106,20 @@ public class GenAlgo {
 			int[][] nextGeneration = new int[NUMPOPULATION][LENGTH];
 			int lastIndex = 0;
 			// Selection
-			for (int i = 0; i < (1 - R) * NUMPOPULATION; i++) {
+			for (int i = 0; i < ((1 - R) * NUMPOPULATION)-1; i++) {
 				nextGeneration[i] = copyBitString(population[selectHypothesis()]);
 				lastIndex=i;
 			}
 			lastIndex++;
-			System.out.println("lastIndex: " + lastIndex);
 			// Crossover
-			for (int i = 0; i < (R * NUMPOPULATION) / 2; i++) {
+			for (int i = 0; i < (R * NUMPOPULATION)/2; i++) {
 				int[] mum = population[selectHypothesis()];
 				int[] dad = population[selectHypothesis()];
 				int[] child1 = new int[LENGTH];
 				int[] child2 = new int[LENGTH];
 				// crosspoint in the middle of the parents
 				for (int j = 0; j < LENGTH; j++) {
-					if (j < LENGTH / 2) {
+					if (j < LENGTH/2) {
 						child1[j] = mum[j];
 						child2[j] = dad[j];
 					} else {
@@ -137,6 +130,19 @@ public class GenAlgo {
 				nextGeneration[(i+lastIndex)%NUMPOPULATION] = child1;
 				nextGeneration[(i+1+lastIndex)%NUMPOPULATION] = child2;
 			}
+			// Mutation
+			for(int i = 1; i < NUMPOPULATION*M; i++){
+				Random rnd = ThreadLocalRandom.current();
+				int mIndex1 = rnd.nextInt(NUMPOPULATION);
+				int mIndex2 = rnd.nextInt(LENGTH);
+				if (nextGeneration[mIndex1][mIndex2] == 0){
+					nextGeneration[mIndex1][mIndex2] = 1;
+				}else{
+					nextGeneration[mIndex1][mIndex2] = 0;
+				}
+			}
+			
+			
 			for(int i = 0; i < nextGeneration.length; i++){
 				fitnesses[i] = getFitness(nextGeneration[i]);
 			}
@@ -152,5 +158,6 @@ public class GenAlgo {
 		GenAlgo g = new GenAlgo();
 		g.evolutionAlgorithm();
 	}
+	
 
 }
