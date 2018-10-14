@@ -8,7 +8,7 @@ public class GenAlgo {
 	private static final int P = 100;
 	private static final int LENGTH = 100;
 	private static final double R = 0.05;
-	private static final double M = 0.1;
+	private static final double M = 0.01;
 	private int[] finalBitString = new int[LENGTH];
 	private int[][] population = new int[P][LENGTH];
 	private int[] fitnesses = new int[P];
