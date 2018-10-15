@@ -5,7 +5,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GenAlgo {
 
-	private static final int P = 100;
+	// population has to be bigger than length f.e. length = 100 , P = 500
+	private static final int P = 500;
 	private static final int LENGTH = 100;
 	private static final double R = 0.05;
 	private static final double M = 0.01;
@@ -120,7 +121,7 @@ public class GenAlgo {
 				int cross = rnd.nextInt(LENGTH);
 				// crosspoint in the middle of the parents
 				for (int j = 0; j < LENGTH; j++) {
-					if (j < cross) {
+					if (j < LENGTH/2) {
 						child1[j] = mum[j];
 						child2[j] = dad[j];
 					} else {
