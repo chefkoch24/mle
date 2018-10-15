@@ -7,9 +7,9 @@ public class GenAlgo {
 
 	// population has to be bigger than length f.e. length = 100 , P = 500
 	private static final int P = 500;
-	private static final int LENGTH = 100;
+	private static final int LENGTH = 1000;
 	private static final double R = 0.05;
-	private static final double M = 0.01;
+	private static final double M = 0.1;
 	private int[] finalBitString = new int[LENGTH];
 	private int[][] population = new int[P][LENGTH];
 	private int[] fitnesses = new int[P];
