@@ -10,7 +10,7 @@ public class SimulatedAnnealing {
 	public static double E = 2.718281;
 	private static final int LENGTH = 100;
 	private static double TEMPERATURE = 1000;
-	private static double EPSILON = 0.01; // The cooling constant
+	private static double EPSILON = 0.007; // The cooling constant
 
 	public SimulatedAnnealing() {
 		this.distance = fillDistances();
