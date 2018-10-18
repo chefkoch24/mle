@@ -23,6 +23,7 @@ public class SimulatedAnnealing {
 
 	/**
 	 * initialize Matrix of distances
+	 * 
 	 * @return matrix of distances
 	 */
 	private int[][] fillDistances() {
@@ -46,6 +47,7 @@ public class SimulatedAnnealing {
 
 	/**
 	 * get the length of the travel distance
+	 * 
 	 * @param travel
 	 * @return the negative length of the travel distance
 	 */
@@ -60,6 +62,7 @@ public class SimulatedAnnealing {
 
 	/**
 	 * distance between two cities
+	 * 
 	 * @param startCity
 	 * @param endCity
 	 * @return
@@ -70,6 +73,7 @@ public class SimulatedAnnealing {
 
 	/**
 	 * change the position of two cities in the travel array
+	 * 
 	 * @param index1
 	 * @param index2
 	 */
@@ -116,13 +120,13 @@ public class SimulatedAnnealing {
 			TEMPERATURE = TEMPERATURE - EPSILON;
 		} while (TEMPERATURE > EPSILON);
 	}
-	
+
 	public void shuffleArray() {
 		Random rnd = ThreadLocalRandom.current();
 		for (int i = travel.length - 1; i > 0; i--) {
 			int index = rnd.nextInt(i + 1);
 			int a = travel[index];
-			travel[index] =travel[i];
+			travel[index] = travel[i];
 			travel[i] = a;
 		}
 	}

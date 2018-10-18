@@ -81,7 +81,7 @@ public class GenAlgo {
 
 	private double calcProbability(int index) {
 //		System.out.println("prop: " + (double)fitnesses[index] / sumOfFitnesses());
-		return (double)fitnesses[index] / sumOfFitnesses();
+		return (double) fitnesses[index] / sumOfFitnesses();
 	}
 
 	private int selectHypothesis() {
@@ -105,23 +105,23 @@ public class GenAlgo {
 			int[][] nextGeneration = new int[P][LENGTH];
 			int lastIndex = 0;
 			// Selection
-			for (int i = 0; i < ((1 - R) * P)-1; i++) {
+			for (int i = 0; i < ((1 - R) * P) - 1; i++) {
 				nextGeneration[i] = copyBitString(population[selectHypothesis()]);
-				lastIndex=i;
+				lastIndex = i;
 			}
 			lastIndex++;
 			// Crossover
-			for (int i = 0; i < (R * P)/2; i++) {
+			for (int i = 0; i < (R * P) / 2; i++) {
 				int[] mum = population[selectHypothesis()];
 				int[] dad = population[selectHypothesis()];
 				int[] child1 = new int[LENGTH];
 				int[] child2 = new int[LENGTH];
-				//crosspoint random
+				// crosspoint random
 				Random rnd = ThreadLocalRandom.current();
 				int cross = rnd.nextInt(LENGTH);
 				// crosspoint in the middle of the parents
 				for (int j = 0; j < LENGTH; j++) {
-					if (j < LENGTH/2) {
+					if (j < LENGTH / 2) {
 						child1[j] = mum[j];
 						child2[j] = dad[j];
 					} else {
@@ -129,23 +129,22 @@ public class GenAlgo {
 						child2[j] = mum[j];
 					}
 				}
-				nextGeneration[(i+lastIndex)%P] = child1;
-				nextGeneration[(i+1+lastIndex)%P] = child2;
+				nextGeneration[(i + lastIndex) % P] = child1;
+				nextGeneration[(i + 1 + lastIndex) % P] = child2;
 			}
 			// Mutation
 			Random rnd = ThreadLocalRandom.current();
-			for(int i = 0; i < P*M; i++){
+			for (int i = 0; i < P * M; i++) {
 				int mIndex1 = rnd.nextInt(P);
 				int mIndex2 = rnd.nextInt(LENGTH);
-				if (nextGeneration[mIndex1][mIndex2] == 0){
+				if (nextGeneration[mIndex1][mIndex2] == 0) {
 					nextGeneration[mIndex1][mIndex2] = 1;
-				}else{
+				} else {
 					nextGeneration[mIndex1][mIndex2] = 0;
 				}
 			}
 
-
-			for(int i = 0; i < nextGeneration.length; i++){
+			for (int i = 0; i < nextGeneration.length; i++) {
 				fitnesses[i] = getFitness(nextGeneration[i]);
 			}
 			population = nextGeneration;
@@ -160,6 +159,5 @@ public class GenAlgo {
 		GenAlgo g = new GenAlgo();
 		g.evolutionAlgorithm();
 	}
-
 
 }
