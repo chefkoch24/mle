@@ -16,8 +16,8 @@ public class VM {
     final byte ADD = 5;
     final byte SUB = 6;
     final byte JIH = 7;
-    
-    final int maxOperationPerVMSimulation = 100;
+
+    final int maxOperationPerVMSimulation = 1000;
     final int minSizeOfThePrime = 3;
 
     // change the vm parameters according to the opcode length
