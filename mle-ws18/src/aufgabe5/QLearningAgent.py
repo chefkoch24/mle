@@ -8,33 +8,33 @@ class QLearningAgent:
     alpha = 0.1 #learnrate
     epsilon = 0.1 #10% for Epsilon Greedy
     gamma = 0.9 #Discount factor
-    #initalize q_table
-    q_table = []
-    
     #Constructor
     def __init__(self):
+        #initalize q_table
+        self.q_table = []
         #field is 9 units long
         for i in range(9):
             obj = [];
             #Three actions: left, stay, right
             for j in range(3):
                 obj.append(randint(0,1))
-                q_table.append(obj)
-        print("Initalize q_table:", q_table)
+                self.q_table.append(obj)
+        print("Initalize q_table:", self.q_table)
     
     def indexOfMaxElement(self, l):
         index = 0
         max = 0
-        for i in l:
+        for i in range(len(l)):
             if l[i] > max:
                 index = i
-                return index
+        return index
 
     def learn(self, s, a, r, s_next):
-        q_table_old= q_table[s][a]
-        next_max_action = chooseAction(s_next)
-        q_table_new = q_table_old + alpha * (r + gamma * max(q_table[s_next][next_max_action]) - q_table_old)
-        q_table[s][a]
+        q_table_old= self.q_table[s][a]
+        next_max_action = self.chooseAction(s_next)
+        q_table_new = q_table_old + QLearningAgent.alpha * (r + QLearningAgent.gamma * max(self.q_table[s_next]) - q_table_old)
+        self.q_table[s][a] = q_table_new
+        print("new q", self.q_table)
     
         s = s_next
     
@@ -44,13 +44,13 @@ class QLearningAgent:
         #epsilon greedy
         e = random()
         print("e", e)
-        if(e < epsilon):
+        if(e < QLearningAgent.epsilon):
             #choose random
-            temp = randint(0,2)
+            temp = randint(-1,1)
             #return index of action
             a = temp
         else:
-            a = indexOfMaxElement(q_table[s])
+            a = self.indexOfMaxElement(self.q_table[s])
             print(a)     
         return a     
             
