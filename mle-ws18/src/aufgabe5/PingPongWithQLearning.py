@@ -49,6 +49,13 @@ class BasicGame(GameGL):
     # 30px
     pixelSize = 30
 
+    # maxSizes
+    ymax = 10
+    xmax = 10
+    schlaegerBreite = 4
+    schlaegerMax = xmax - (schlaegerBreite/2)
+
+    # Startpositionen
     xBall      = 5
     yBall      = 6
     xSchlaeger = 5
@@ -97,11 +104,14 @@ class BasicGame(GameGL):
         self.xBall += self.xV
         self.yBall += self.yV
         # change direction of ball if it's at wall
-        if (self.xBall > 10 or self.xBall < 1):
+        if (self.xBall > xmax or self.xBall < 1):
             self.xV = -self.xV
-        if (self.yBall > 10 or self.yBall < 1):
+        if (self.yBall > ymax or self.yBall < 1):
             self.yV = -self.yV
         # check whether ball on bottom line
+        tmp_xV = (xV + 1)/2
+        tmp_yV = (yV + 1)/2
+        s = ((((self.xBall*ymax+self.yBall)*schlaegerMax+self.xSchlaeger)*1+tmp_xV)*1+tmp_yV)
         if self.yBall == 0:
             # check whther ball is at position of player
             if (self.xSchlaeger == self.xBall 
@@ -112,7 +122,8 @@ class BasicGame(GameGL):
             else:
                 print("negative reward")
                 qla.learn(self.xSchlaeger, action, -1, self.xSchlaeger + action)
-        
+        else:
+            qla.learn(self.xSchlaeger, action, 0, self.xSchlaeger + action)
         # repaint
         self.drawBall()
         self.drawComputer()
@@ -161,8 +172,9 @@ class BasicGame(GameGL):
         # top left point
         glVertex2f(xPos, yPos + (self.pixelSize * height))
         glEnd()
-    
-    def drawComputer(self, width = 3, height = 1, x = 0, y = 0, color = (1.0, 0.0, 0.0)):
+        
+    # Schlaeger
+    def drawComputer(self, width = schlaegerBreite, height = 1, x = 0, y = 0, color = (1.0, 0.0, 0.0)):
         x = self.xSchlaeger
         print("drawComputer", self.xSchlaeger)
         xPos = x * self.pixelSize
@@ -184,5 +196,5 @@ class BasicGame(GameGL):
 
 if __name__ == '__main__':
     game = BasicGame("PingPong")
-    qla = QLearningAgent()
+    qla = QLearningAgent(10,10,schlaegerMax,1,1)
     game.start()

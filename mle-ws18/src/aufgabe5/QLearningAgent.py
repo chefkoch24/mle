@@ -9,11 +9,12 @@ class QLearningAgent:
     epsilon = 0.1 #10% for Epsilon Greedy
     gamma = 0.9 #Discount factor
     #Constructor
-    def __init__(self):
+    def __init__(self, xballmax, yballmax, xschlaegermax, xvmax, yvmax):
         #initalize q_table
         self.q_table = []
+        s = ((((xballmax*ymax+yballmax)*xschlaegermax+xschlaegermax)*xvmax+xvmax)*yvmax+yvmax)
         #field is 9 units long
-        for i in range(9):
+        for i in range(s):
             obj = [];
             #Three actions: left, stay, right
             for j in range(3):
@@ -35,7 +36,6 @@ class QLearningAgent:
         q_table_new = q_table_old + QLearningAgent.alpha * (r + QLearningAgent.gamma * max(self.q_table[s_next]) - q_table_old)
         self.q_table[s][a] = q_table_new
         print("new q", self.q_table)
-    
         s = s_next
     
     def chooseAction(self, s):
