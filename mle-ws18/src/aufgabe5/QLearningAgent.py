@@ -12,7 +12,8 @@ class QLearningAgent:
     def __init__(self, xballmax, yballmax, xschlaegermax, xvmax, yvmax):
         #initalize q_table
         self.q_table = []
-        s = ((((xballmax*ymax+yballmax)*xschlaegermax+xschlaegermax)*xvmax+xvmax)*yvmax+yvmax)
+        s = ((((xballmax*yballmax+yballmax)*xschlaegermax+xschlaegermax)*xvmax+xvmax)*yvmax+yvmax)
+        print("s: ", s)
         #field is 9 units long
         for i in range(s):
             obj = [];
@@ -30,9 +31,10 @@ class QLearningAgent:
                 index = i
         return index
 
-    def learn(self, s, a, r, s_next):
+    def learn(self, s, a, r):
         q_table_old= self.q_table[s][a]
-        next_max_action = self.chooseAction(s_next)
+        next_max_action = self.chooseAction(s)
+        s_next = s + next_max_action
         q_table_new = q_table_old + QLearningAgent.alpha * (r + QLearningAgent.gamma * max(self.q_table[s_next]) - q_table_old)
         self.q_table[s][a] = q_table_new
         print("new q", self.q_table)

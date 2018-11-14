@@ -104,26 +104,29 @@ class BasicGame(GameGL):
         self.xBall += self.xV
         self.yBall += self.yV
         # change direction of ball if it's at wall
-        if (self.xBall > xmax or self.xBall < 1):
+        if (self.xBall > self.xmax or self.xBall < 1):
             self.xV = -self.xV
-        if (self.yBall > ymax or self.yBall < 1):
+        if (self.yBall > self.ymax or self.yBall < 1):
             self.yV = -self.yV
         # check whether ball on bottom line
-        tmp_xV = (xV + 1)/2
-        tmp_yV = (yV + 1)/2
-        s = ((((self.xBall*ymax+self.yBall)*schlaegerMax+self.xSchlaeger)*1+tmp_xV)*1+tmp_yV)
+        tmp_xV = (self.xV + 1)/2
+        tmp_yV = (self.yV + 1)/2
+        print("velo: ", tmp_xV)
+        s = ((((self.xBall*self.ymax+self.yBall)*self.schlaegerMax+self.xSchlaeger)*1+tmp_xV)*1+tmp_yV)
+        s = int(s)
+        print("s: ", s)
         if self.yBall == 0:
             # check whther ball is at position of player
             if (self.xSchlaeger == self.xBall 
                 or self.xSchlaeger == self.xBall -1
                 or self.xSchlaeger == self.xBall -2):
                 print("positive reward")
-                qla.learn(self.xSchlaeger, action, 1, self.xSchlaeger + action)
+                qla.learn(s, action, 1)
             else:
                 print("negative reward")
-                qla.learn(self.xSchlaeger, action, -1, self.xSchlaeger + action)
+                qla.learn(s, action, -1)
         else:
-            qla.learn(self.xSchlaeger, action, 0, self.xSchlaeger + action)
+            qla.learn(s, action, 0)
         # repaint
         self.drawBall()
         self.drawComputer()
@@ -196,5 +199,5 @@ class BasicGame(GameGL):
 
 if __name__ == '__main__':
     game = BasicGame("PingPong")
-    qla = QLearningAgent(10,10,schlaegerMax,1,1)
+    qla = QLearningAgent(10,10,8,1,1)
     game.start()
