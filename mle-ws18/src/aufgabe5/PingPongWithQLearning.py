@@ -85,8 +85,9 @@ class BasicGame(GameGL):
         glOrtho(0.0, self.width, 0.0, self.height, 0.0, 1.0)
         glMatrixMode (GL_MODELVIEW)
         glLoadIdentity()
-
-        actionIndex = qla.chooseAction(self.xSchlaeger)
+        
+        s = qla.calculate_state(self.xSchlaeger, 8, self.xBall, self.yBall, 10, self.xV, self.yV)
+        actionIndex = qla.choose_action(self.xSchlaeger)
         print("actionIndex: ",actionIndex)
         print("xSchlaeger", self.xSchlaeger)
         if actionIndex == 0:
@@ -97,6 +98,7 @@ class BasicGame(GameGL):
         else:
             self.xSchlaeger = self.xSchlaeger + 1
             print("right")
+        s_next = qla.calculate_state(self.xSchlaeger, 8, self.xBall, self.yBall, 10, self.xV, self.yV)    
         # don't allow puncher to leave the pitch
         if self.xSchlaeger < 0:
             self.xSchlaeger = 0
@@ -111,24 +113,18 @@ class BasicGame(GameGL):
         if (self.yBall > self.ymax or self.yBall < 1):
             self.yV = -self.yV
         # check whether ball on bottom line
-        tmp_xV = (self.xV + 1)/2
-        tmp_yV = (self.yV + 1)/2
-        print("velo: ", tmp_xV)
-        s = ((((self.xBall*self.ymax+self.yBall)*self.schlaegerMax+self.xSchlaeger)*1+tmp_xV)*1+tmp_yV)
-        s = int(s)
-        print("s: ", s)
         if self.yBall == 0:
             # check whther ball is at position of player
             if (self.xSchlaeger == self.xBall 
                 or self.xSchlaeger == self.xBall -1
                 or self.xSchlaeger == self.xBall -2):
                 print("positive reward")
-                qla.learn(s, actionIndex, 1)
+                qla.learn(s, s_next, actionIndex, 1)
             else:
                 print("negative reward")
-                qla.learn(s, actionIndex, -1)
+                qla.learn(s, s_next, actionIndex, -1)
         else:
-            qla.learn(s, actionIndex, 0)
+            qla.learn(s, s_next, actionIndex, 0)
         # repaint
         self.drawBall()
         self.drawComputer()
@@ -201,5 +197,5 @@ class BasicGame(GameGL):
 
 if __name__ == '__main__':
     game = BasicGame("PingPong")
-    qla = QLearningAgent(10,10,8,1,1)
+    qla = QLearningAgent(8, 10, 10)
     game.start()
