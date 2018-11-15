@@ -86,14 +86,16 @@ class BasicGame(GameGL):
         glMatrixMode (GL_MODELVIEW)
         glLoadIdentity()
 
-        action = qla.chooseAction(self.xSchlaeger)
-        print("action: ",action)
+        actionIndex = qla.chooseAction(self.xSchlaeger)
+        print("actionIndex: ",actionIndex)
         print("xSchlaeger", self.xSchlaeger)
-        if action < 0:
-            self.xSchlaeger -= action
+        if actionIndex == 0:
+            self.xSchlaeger = self.xSchlaeger -1
             print("left")
+        elif actionIndex == 1:
+            self.xSchlaeger = self.xSchlaeger
         else:
-            self.xSchlaeger += action
+            self.xSchlaeger = self.xSchlaeger + 1
             print("right")
         # don't allow puncher to leave the pitch
         if self.xSchlaeger < 0:
@@ -121,12 +123,12 @@ class BasicGame(GameGL):
                 or self.xSchlaeger == self.xBall -1
                 or self.xSchlaeger == self.xBall -2):
                 print("positive reward")
-                qla.learn(s, action, 1)
+                qla.learn(s, actionIndex, 1)
             else:
                 print("negative reward")
-                qla.learn(s, action, -1)
+                qla.learn(s, actionIndex, -1)
         else:
-            qla.learn(s, action, 0)
+            qla.learn(s, actionIndex, 0)
         # repaint
         self.drawBall()
         self.drawComputer()
