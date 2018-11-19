@@ -3,7 +3,7 @@ from random import random
 from _operator import index
 
 class QLearningAgent:
-    
+
     #variables for all Objects of QLearningAgent
     alpha = 0.1 #learnrate
     epsilon = 0.1 #10% for Epsilon Greedy
@@ -22,7 +22,7 @@ class QLearningAgent:
                 obj.append(randint(0,1))
                 self.q_table.append(obj)
         print("Initalize q_table:", self.q_table)
-    
+
     def indexOfMaxElement(self, l):
         index = 0
         max = 0
@@ -31,16 +31,15 @@ class QLearningAgent:
                 index = i
         return index
 
-    def learn(self, s, a, r):
+    def learn(self, s, s_next, a, r):
         q_table_old= self.q_table[s][a]
-        next_max_action = self.chooseAction(s)
+        next_max_action = self.choose_action(s)
         s_next = s + next_max_action
         q_table_new = q_table_old + QLearningAgent.alpha * (r + QLearningAgent.gamma * max(self.q_table[s_next]) - q_table_old)
         self.q_table[s][a] = q_table_new
-        print("new q", self.q_table)
         s = s_next
-    
-    def chooseAction(self, s):
+
+    def choose_action(self, s):
         a = 0 #action
         #choose a from s using epsilon-greedy
         #epsilon greedy
@@ -50,9 +49,14 @@ class QLearningAgent:
             #choose random
             temp = randint(-1,1)
             #return index of action
+            print(temp)
             a = temp
         else:
             a = self.indexOfMaxElement(self.q_table[s])
-            print(a)     
-        return a     
-            
+            print(a)
+        return a
+
+    def calculate_state(self, xSchlaeger, schlaegerMax, xBall, yBall, yMax, xV, yV):
+        xV = (xV + 1)/2;
+        yV = (yV + 1)/2;
+        return int(((((xBall * yMax + yBall)* schlaegerMax + xSchlaeger) * 1 + xV) * 1 + yV))

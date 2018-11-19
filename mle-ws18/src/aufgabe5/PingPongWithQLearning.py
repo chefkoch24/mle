@@ -62,7 +62,7 @@ class BasicGame(GameGL):
     xV         = 1
     yV         = 1
     score      = 0
-    
+
     def __init__(self, name, width = 360, height = 360):
         super
         self.windowName = name
@@ -85,9 +85,9 @@ class BasicGame(GameGL):
         glOrtho(0.0, self.width, 0.0, self.height, 0.0, 1.0)
         glMatrixMode (GL_MODELVIEW)
         glLoadIdentity()
-        
+
         s = qla.calculate_state(self.xSchlaeger, 8, self.xBall, self.yBall, 10, self.xV, self.yV)
-        actionIndex = qla.choose_action(self.xSchlaeger)
+        actionIndex = qla.choose_action(s)
         print("actionIndex: ",actionIndex)
         print("xSchlaeger", self.xSchlaeger)
         if actionIndex == 0:
@@ -98,13 +98,13 @@ class BasicGame(GameGL):
         else:
             self.xSchlaeger = self.xSchlaeger + 1
             print("right")
-        s_next = qla.calculate_state(self.xSchlaeger, 8, self.xBall, self.yBall, 10, self.xV, self.yV)    
+        s_next = qla.calculate_state(self.xSchlaeger, 8, self.xBall, self.yBall, 10, self.xV, self.yV)
         # don't allow puncher to leave the pitch
         if self.xSchlaeger < 0:
             self.xSchlaeger = 0
         if self.xSchlaeger > 9:
             self.xSchlaeger = 9
-        
+
         self.xBall += self.xV
         self.yBall += self.yV
         # change direction of ball if it's at wall
@@ -115,7 +115,7 @@ class BasicGame(GameGL):
         # check whether ball on bottom line
         if self.yBall == 0:
             # check whther ball is at position of player
-            if (self.xSchlaeger == self.xBall 
+            if (self.xSchlaeger == self.xBall
                 or self.xSchlaeger == self.xBall -1
                 or self.xSchlaeger == self.xBall -2):
                 print("positive reward")
@@ -128,12 +128,12 @@ class BasicGame(GameGL):
         # repaint
         self.drawBall()
         self.drawComputer()
-        
+
         # timeout of 100 milliseconds
         time.sleep(0.1)
-        
+
         glutSwapBuffers()
-    
+
     def start(self):
         glutInit()
         glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH)
@@ -145,16 +145,16 @@ class BasicGame(GameGL):
         glutReshapeFunc(self.onResize)
         glutIdleFunc(self.display)
         glutKeyboardFunc(self.keyboard)
-        glutMainLoop() 
-    
+        glutMainLoop()
+
     def updateSize(self):
         self.width  = glutGet(GLUT_WINDOW_WIDTH)
         self.height = glutGet(GLUT_WINDOW_HEIGHT)
-    
+
     def onResize(self, width, height):
         self.width  = width
         self.height = height
-    
+
     def drawBall(self, width = 1, height = 1, x = 5, y = 6, color = (0.0, 1.0, 0.0)):
         x = self.xBall
         y = self.yBall
@@ -173,7 +173,7 @@ class BasicGame(GameGL):
         # top left point
         glVertex2f(xPos, yPos + (self.pixelSize * height))
         glEnd()
-        
+
     # Schlaeger
     def drawComputer(self, width = schlaegerBreite, height = 1, x = 0, y = 0, color = (1.0, 0.0, 0.0)):
         x = self.xSchlaeger
@@ -197,5 +197,5 @@ class BasicGame(GameGL):
 
 if __name__ == '__main__':
     game = BasicGame("PingPong")
-    qla = QLearningAgent(8, 10, 10)
+    qla = QLearningAgent(8, 10, 10, 1, 1)
     game.start()
