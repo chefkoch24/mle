@@ -58,7 +58,7 @@ class BasicGame(GameGL):
     # Startpositionen
     xBall      = 5
     yBall      = 6
-    xSchlaeger = 5
+    xSchlaeger = 7
     xV         = 1
     yV         = 1
     score      = 0
@@ -86,25 +86,23 @@ class BasicGame(GameGL):
         glMatrixMode (GL_MODELVIEW)
         glLoadIdentity()
 
-        s = qla.calculate_state(self.xSchlaeger, 8, self.xBall, self.yBall, 10, self.xV, self.yV)
+        s = qla.calculate_state(self.xSchlaeger, 9, self.xBall, self.yBall, 10, self.xV, self.yV)
         actionIndex = qla.choose_action(s)
-        print("actionIndex: ",actionIndex)
-        print("xSchlaeger", self.xSchlaeger)
+        print("actionIndex: ", actionIndex)
         if actionIndex == 0:
             self.xSchlaeger = self.xSchlaeger -1
             print("left")
         elif actionIndex == 1:
             self.xSchlaeger = self.xSchlaeger
-        else:
+            print("stay")
+        elif actionIndex == 2:
             self.xSchlaeger = self.xSchlaeger + 1
             print("right")
-        s_next = qla.calculate_state(self.xSchlaeger, 8, self.xBall, self.yBall, 10, self.xV, self.yV)
         # don't allow puncher to leave the pitch
         if self.xSchlaeger < 0:
             self.xSchlaeger = 0
         if self.xSchlaeger > 9:
             self.xSchlaeger = 9
-
         self.xBall += self.xV
         self.yBall += self.yV
         # change direction of ball if it's at wall
@@ -113,6 +111,7 @@ class BasicGame(GameGL):
         if (self.yBall > self.ymax or self.yBall < 1):
             self.yV = -self.yV
         # check whether ball on bottom line
+        s_next = qla.calculate_state(self.xSchlaeger, 9, self.xBall, self.yBall, 10, self.xV, self.yV)
         if self.yBall == 0:
             # check whther ball is at position of player
             if (self.xSchlaeger == self.xBall
@@ -127,8 +126,7 @@ class BasicGame(GameGL):
             qla.learn(s, s_next, actionIndex, 0)
         # repaint
         self.drawBall()
-        self.drawComputer()
-
+        self.drawComputer()        
         # timeout of 100 milliseconds
         time.sleep(0.1)
 
@@ -177,7 +175,6 @@ class BasicGame(GameGL):
     # Schlaeger
     def drawComputer(self, width = schlaegerBreite, height = 1, x = 0, y = 0, color = (1.0, 0.0, 0.0)):
         x = self.xSchlaeger
-        print("drawComputer", self.xSchlaeger)
         xPos = x * self.pixelSize
         # set a bit away from bottom
         yPos = y * self.pixelSize# + (self.pixelSize * height / 2)
@@ -197,5 +194,5 @@ class BasicGame(GameGL):
 
 if __name__ == '__main__':
     game = BasicGame("PingPong")
-    qla = QLearningAgent(8, 10, 10, 1, 1)
+    qla = QLearningAgent(9, 9, 9, 1, 1)
     game.start()
