@@ -106,9 +106,9 @@ class BasicGame(GameGL):
         self.xBall += self.xV
         self.yBall += self.yV
         # change direction of ball if it's at wall
-        if (self.xBall > self.xmax or self.xBall < 1):
+        if (self.xBall > 9 or self.xBall < 1):
             self.xV = -self.xV
-        if (self.yBall > self.ymax or self.yBall < 1):
+        if (self.yBall > 10 or self.yBall < 1):
             self.yV = -self.yV
         # check whether ball on bottom line
         s_next = qla.calculate_state(self.xSchlaeger, 9, self.xBall, self.yBall, 10, self.xV, self.yV)
@@ -126,7 +126,7 @@ class BasicGame(GameGL):
             qla.learn(s, s_next, actionIndex, 0)
         # repaint
         self.drawBall()
-        self.drawComputer()        
+        self.drawComputer()
         # timeout of 100 milliseconds
         time.sleep(0.1)
 
