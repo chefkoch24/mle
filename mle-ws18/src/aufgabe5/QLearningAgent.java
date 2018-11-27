@@ -86,7 +86,7 @@ public class QLearningAgent {
 	}
 
 	public void readFile() throws NumberFormatException, IOException {
-		String saveQValues = "c:/Users/Sannes/Desktop/MLE/PingPongJava (1)/JavaInputOutput/TrainedQValues.txt";
+		String saveQValues = "./TrainedQValues.txt";
 		BufferedReader reader = new BufferedReader(new FileReader(saveQValues));
 		String line = "";
 		int row = 0;
