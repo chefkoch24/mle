@@ -26,6 +26,13 @@ public class MainFrame extends JFrame {
 	// false -> QTable random mit Werten zwischen 0 und 1 (e-greedy an)
 	boolean trained = true;
 
+	/**
+	 * Konstruktor
+	 * 
+	 * @param args
+	 * @throws NumberFormatException
+	 * @throws IOException
+	 */
 	public MainFrame(String[] args) throws NumberFormatException, IOException {
 		super("PingPong");
 
@@ -41,6 +48,12 @@ public class MainFrame extends JFrame {
 		run();
 	}
 
+	/**
+	 * Startet den Ablauf von PinPong mit dem Q-Learning Algorithmus
+	 * 
+	 * @throws NumberFormatException
+	 * @throws IOException
+	 */
 	public void run() throws NumberFormatException, IOException {
 		int counter = 0;
 		int xBall = 5, yBall = 6, xSchlaeger = 5, xV = 1, yV = 1;

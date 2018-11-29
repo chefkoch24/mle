@@ -12,6 +12,11 @@ public class InputOutput {
 	public MainFrame	mainFrame	= null;
 	Graphics			graphics	= null;
 
+	/**
+	 * 
+	 * 
+	 * @param frame
+	 */
 	public InputOutput(MainFrame frame) {
 		this.mainFrame = frame;
 
@@ -75,6 +80,13 @@ public class InputOutput {
 		});
 	}
 
+	/**
+	 * 
+	 * 
+	 * @param x
+	 * @param y
+	 * @param color
+	 */
 	public synchronized void drawPixel(int x, int y, Color color) {
 		if (graphics == null)
 			graphics = mainFrame.canvas.img.getGraphics();
@@ -84,6 +96,15 @@ public class InputOutput {
 
 	}
 
+	/**
+	 * 
+	 * 
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 * @param color
+	 */
 	public synchronized void fillRect(int x, int y, int width, int height,
 			Color color) {
 		if (graphics == null)
