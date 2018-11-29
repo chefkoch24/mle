@@ -21,7 +21,7 @@ public class MainFrame extends JFrame {
 	Image renderTarget = null;
 	public int mousex, mousey, mousek;
 	public int key;
-	int trainingsteps = 0; // steps auf 0 setzen wenn trained auf true
+	int trainingsteps = 10; // steps auf 0 setzen wenn trained auf true
 	// true -> QTable wird aus einer Datei ausgelesen und nur noch die beste Aktion wird ausgewählt(e-greedy aus)
 	// false -> QTable random mit Werten zwischen 0 und 1 (e-greedy an)
 	boolean trained = true;
@@ -60,8 +60,8 @@ public class MainFrame extends JFrame {
 		int score = 0;
 		int xBallMax = 10;
 		int yBallMax = 11;
-		int yMax = 12;
-		int schlaegerMax = 10;
+		int yMax = 11;
+		int schlaegerMax = 9;
 		int xSchlaegerMax = 9;
 		int xVmax = 2;
 		int yVmax = 2;
@@ -93,7 +93,6 @@ public class MainFrame extends JFrame {
 			if (yBall > 10 || yBall < 1) {
 				yV = -yV;
 			}
-
 			s_next = qla.calculateState(xBall, yMax, yBall, schlaegerMax, xSchlaeger, 2, xV, 2, yV);
 			if (yBall == 11) {
 				if (xSchlaeger == xBall || xSchlaeger == xBall - 1 || xSchlaeger == xBall - 2) {

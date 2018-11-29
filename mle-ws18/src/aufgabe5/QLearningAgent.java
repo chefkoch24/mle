@@ -114,7 +114,6 @@ public class QLearningAgent {
 			int yVMax, int yV) {
 		xV = (xV + 1) / 2;
 		yV = (yV + 1) / 2;
-
 		return ((((xBall * yMax + yBall) * schlaegerMax + xSchlaeger) * xVMax + xV) * yVMax + yV);
 	}
 
@@ -133,7 +132,7 @@ public class QLearningAgent {
 			}
 			builder.append("\n");
 		}
-		BufferedWriter writer = new BufferedWriter(new FileWriter("./TrainedQValues.txt"));
+		BufferedWriter writer = new BufferedWriter(new FileWriter("C:/Users/student/git/mle/mle-ws18/src/aufgabe5/TrainedQValues.txt"));
 		writer.write(builder.toString());
 		writer.close();
 	}
@@ -145,7 +144,7 @@ public class QLearningAgent {
 	 * @throws IOException
 	 */
 	public void readFile() throws NumberFormatException, IOException {
-		String saveQValues = "./TrainedQValues.txt";
+		String saveQValues = "C:/Users/student/git/mle/mle-ws18/src/aufgabe5/TrainedQValues.txt";
 		BufferedReader reader = new BufferedReader(new FileReader(saveQValues));
 		String line = "";
 		int row = 0;
