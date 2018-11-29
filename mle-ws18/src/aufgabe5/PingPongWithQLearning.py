@@ -194,5 +194,5 @@ class BasicGame(GameGL):
 
 if __name__ == '__main__':
     game = BasicGame("PingPong")
-    qla = QLearningAgent(9, 9, 9, 1, 1)
+    qla = QLearningAgent(10, 11, 10, 2, 2)
     game.start()

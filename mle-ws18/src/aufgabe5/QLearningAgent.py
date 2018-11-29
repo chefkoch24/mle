@@ -21,6 +21,7 @@ class QLearningAgent:
                 obj.append(float(randint(0,1)))
                 self.q_table.append(obj)
         #print("Initalize q_table:", self.q_table)
+        print(s)
 
     def indexOfMaxElement(self, l):
         index = 0
@@ -68,4 +69,4 @@ class QLearningAgent:
         xV = (xV + 1)/2;
         yV = (yV + 1)/2;
         # 1 is vMax
-        return int((((((xBall * yMax) + yBall)* schlaegerMax + xSchlaeger) * 1 + xV) * 1 + yV))
+        return int((((((xBall * yMax) + yBall)* schlaegerMax + xSchlaeger) * 2 + xV) * 2 + yV))
